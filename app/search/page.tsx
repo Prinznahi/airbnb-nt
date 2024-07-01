@@ -3,14 +3,12 @@
 import React, { useEffect, useState, Suspense } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { useRouter, useSearchParams } from 'next/navigation'; // Ensure correct import
+import { useRouter, useSearchParams } from 'next/navigation';
 import { format, isValid } from "date-fns";
 import InfoCard from '@/components/InfoCard';
 
-function Search() {
-    const router = useRouter();
+function SearchComponent() {
     const searchParams = useSearchParams();
-
     const [location, setLocation] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -65,26 +63,32 @@ function Search() {
                         <p className='button'>Rooms & Beds</p>
                         <p className='button'>More filters</p>
                     </div>
-                    <Suspense fallback={<div>Loading search parameters...</div>}>
-                        <div className='flex flex-col'>
-                            {searchResults.map(({img, location, title, description, star, price, total}) => (
-                                <InfoCard 
-                                    key={img}
-                                    img={img}
-                                    location={location}
-                                    title={title}
-                                    description={description}
-                                    star={star}
-                                    price={price}
-                                    total={total}
-                                />
-                            ))}
-                        </div>
-                    </Suspense>
+                    <div className='flex flex-col'>
+                        {searchResults.map(({img, location, title, description, star, price, total}) => (
+                            <InfoCard 
+                                key={img}
+                                img={img}
+                                location={location}
+                                title={title}
+                                description={description}
+                                star={star}
+                                price={price}
+                                total={total}
+                            />
+                        ))}
+                    </div>
                 </section>
             </main>
             <Footer />
         </div>
+    );
+}
+
+function Search() {
+    return (
+        <Suspense fallback={<div>Loading search parameters...</div>}>
+            <SearchComponent />
+        </Suspense>
     );
 }
 
